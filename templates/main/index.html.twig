@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h2>Welcome</h2>
+	{{ form_start(form) }}
+	{{ form_row(form.firstName) }}
+	{{ form_row(form.lastName) }}
+	{{ form_row(form.country) }}
+	{# render each row and field in the embedded form, in this example it's rendering the experience (Exp) fiels as rows #}
+	<div class="col-sm-8 col-sm-offset-2" id="info_list" data-prototype="{{ form_widget(form.info.vars.prototype)|e('html_attr') }}">
+		{% for row in form.info %}
+			<div class="panel panel-warning">
+				<div class="panel-heading">
+					<strong>{{ row.vars.value.clientName }}</strong>
+				</div>
+				<div class="panel-body">
+					{{ form_row(row) }}
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	{{ form_end(form) }}
+{% endblock %}
