@@ -6,28 +6,30 @@ use App\Entity\Country;
 use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
-    function __construct(ManagerRegistry $doctrine)
-    {
-        $this->doctrine = $doctrine;
-        $this->em = $this->doctrine->getManager();
+    // function __construct(ManagerRegistry $doctrine)
+    // {
+    //     $this->doctrine = $doctrine;
+    //     $this->em = $this->doctrine->getManager();
 
-        $this->countries = $this->em->getRepository(Country::class)->findAll();
-        $this->countryChoice = array();
+    //     $this->countries = $this->em->getRepository(Country::class)->findAll();
+    //     $this->countryChoice = array();
 
-        foreach ($this->countries as $country) {
-            $this->countryChoice[$country->getCountry()] = $country;
-        }
-        //dump($this->countryChoice);
-    }
+    //     foreach ($this->countries as $country) {
+    //         $this->countryChoice[$country->getCountry()] = $country;
+    //     }
+    //     //dump($this->countryChoice);
+    // }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -46,11 +48,17 @@ class UserType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-            ->add('country', ChoiceType::class, [
-                'choices' => $this->countryChoice,
+            ->add('country', EntityType::class, [
+                'class' => Country::class,
+                'choice_label' => 'country',
                 'attr' => [
                     'class' => 'form-control'
-                ]
+                ],
+                // 'query_builder' => function(EntityRepository $entityRepository) {
+                //     return $qb = $entityRepository->createQueryBuilder('a');
+                // },
+
+
             ]) //make dropdown of this field later and populate with database value
             ->add('info', CollectionType::class, [
                 'entry_type' => InfoType::class,

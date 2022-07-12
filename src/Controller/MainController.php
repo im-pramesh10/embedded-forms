@@ -21,7 +21,7 @@ class MainController extends AbstractController
     {
         $em = $doctrine->getManager();
         $user = $em->getRepository(User::class)->find($id);
-        dd($user);
+        // dd($user);
         // $user = new User();
         /* $user->setFirstName("Pramesh");
         $user->setLastName("Mahat");
