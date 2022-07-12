@@ -30,13 +30,13 @@ class User
     private $lastName;
 
     /**
-     * @ORM\OneToOne(targetEntity=Country::class, inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="user", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $country;
 
     /**
-     * @ORM\OneToMany(targetEntity=Info::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Info::class, mappedBy="user", cascade={"persist"})
      */
     private $info;
 

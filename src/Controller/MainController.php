@@ -15,13 +15,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     /**
-     * @Route("/", name="app_main")
+     * @Route("/{id}", name="app_main")
      */
-    public function index(Request $request, ManagerRegistry $doctrine): Response
+    public function index(Request $request, ManagerRegistry $doctrine, $id): Response
     {
         $em = $doctrine->getManager();
-        $user = new User();
-        $user->setFirstName("Pramesh");
+        $user = $em->getRepository(User::class)->find($id);
+        dd($user);
+        // $user = new User();
+        /* $user->setFirstName("Pramesh");
         $user->setLastName("Mahat");
 
 
@@ -35,14 +37,15 @@ class MainController extends AbstractController
         $info->setNumber("0348383");
         $info->setUser($user);
 
-        $user->addInfo($info);
+        $user->addInfo($info);*/
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         //dd($form);
 
         if ($form->isSubmitted()) {
-            dump($user);
+            $em->persist($user);
+            $em->flush();
         }
 
         return $this->render('main/index.html.twig', [

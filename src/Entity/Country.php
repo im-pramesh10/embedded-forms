@@ -23,7 +23,7 @@ class Country
     private $country;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, mappedBy="country", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="country", cascade={"persist", "remove"})
      */
     private $user;
 
