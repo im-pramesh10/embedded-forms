@@ -6,7 +6,7 @@ use App\Entity\Country;
 use App\Entity\Info;
 use App\Entity\User;
 use App\Form\UserType;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,15 +14,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
+
+    private $em;
+
+    public function __construct(EntityManagerInterface $em){
+        $this->em = $em;
+    }
+    
     /**
-     * @Route("/{id}", name="app_main")
+     * @Route("/main", name="app_main")
      */
-    public function index(Request $request, ManagerRegistry $doctrine, $id): Response
+    public function index(Request $request): Response
     {
-        $em = $doctrine->getManager();
-        $user = $em->getRepository(User::class)->find($id);
+        // $user = $this->em->getRepository(User::class)->find($id);
         // dd($user);
-        // $user = new User();
+        $user = new User();
         /* $user->setFirstName("Pramesh");
         $user->setLastName("Mahat");
 
@@ -44,8 +50,8 @@ class MainController extends AbstractController
         //dd($form);
 
         if ($form->isSubmitted()) {
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
         }
 
         return $this->render('main/index.html.twig', [

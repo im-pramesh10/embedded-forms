@@ -59,7 +59,9 @@ class UserType extends AbstractType
                 // },
 
 
-            ]) //make dropdown of this field later and populate with database value
+            ]) 
+            //make dropdown of this field later and populate with database value
+            
             ->add('info', CollectionType::class, [
                 'entry_type' => InfoType::class,
                 'entry_options' => [
